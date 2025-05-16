@@ -2,16 +2,19 @@ package Workshop.HandlingRaceConditions;
 
 public class SynchronizedWorkshop {
     public static int counter = 0;
+    public static Object object = new Object();
     public static class MyRunnable implements Runnable
     {
         //TODO: use `synchronized` to prevent race condition
         @Override
         public void run() {
-            int i;
-            for (i = 0; i < 1_000_000; i++) {
+            synchronized (object){
+                int i;
+                for (i = 0; i < 1_000_000; i++) {
                     counter += 1;
+                }
+                System.out.println("number of increments in " + Thread.currentThread().getName() + ": " + i);
             }
-            System.out.println("number of increments in " + Thread.currentThread().getName() + ": " + i);
         }
     }
     public static void main(String[] args) throws InterruptedException {
